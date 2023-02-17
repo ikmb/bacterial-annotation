@@ -25,15 +25,15 @@ run_name = ( params.run_name == false) ? "${workflow.sessionId}" : "${params.run
 WorkflowMain.initialise(workflow, params, log)
 WorkflowPipeline.initialise( params, log)
 
-include { MAIN } from './workflows/main' params(params)
+include { BACTERIAL_ANNOTATION } from './workflows/bacterial_annotation' params(params)
 
 multiqc_report = Channel.from([])
 
 workflow {
 
-	MAIN()
+	BACTERIAL_ANNOTATION()
 
-	 multiqc_report = multiqc_report.mix(MAIN.out.qc)
+	multiqc_report = multiqc_report.mix(BACTERIAL_ANNOTATION.out.qc)
 }
 
 workflow.onComplete {
