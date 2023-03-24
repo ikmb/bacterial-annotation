@@ -11,13 +11,15 @@ process DFAST_CORE {
 	env DFAST_DB_ROOT
 
 	output:
-	path(results)
+	path(results), emit: results
+	path(report), emit: report
 
 	script:
 	base_name = fasta.getBaseName()
 	results = base_name + "_dfast"
-
+	report = base_name + ".statistics.txt"
 	"""
 		dfast --genome $fasta --minimum_length 200 -o $results --cpu ${task.cpus}
+		cp "${results}/statistics.txt" $report
 	"""
 }
