@@ -16,7 +16,7 @@ A regular expression pointing to a list of bacterial assemblies in FASTA format.
 
 ### `--tools prokka,dfast`
 
-This pipeline currently supports to annotation tools:
+This pipeline currently supports two annotation tools:
 
 - [DFast_core](https://github.com/nigyta/dfast_core) [dfast]
 - [Prokka](https://github.com/tseemann/prokka) [prokka]
