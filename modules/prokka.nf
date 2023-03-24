@@ -21,6 +21,7 @@ process PROKKA {
 			--prefix $base \
 			--compliant \
 			--centre CCGA \
-			--cpus ${task.cpus}
+			--cpus ${task.cpus} \
+			$fasta 
 	"""		
 }
