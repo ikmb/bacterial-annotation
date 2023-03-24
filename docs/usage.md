@@ -5,7 +5,7 @@ This pipeline is configured to run on the IKMB medCluster. More generel support 
 ## Basic example
 
 ```
-nextflow run ikmb/bacterial-annotation --assemblies '/path/to/assemblies/*.fasta'
+nextflow run ikmb/bacterial-annotation --assemblies '/path/to/assemblies/*.fasta' --tools prokka
 ```
 
 ## Options
