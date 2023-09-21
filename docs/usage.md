@@ -1,11 +1,11 @@
 # Usage information
 
-This pipeline is configured to run on the IKMB medCluster. More generel support for other compute systems may follow later. 
+This pipeline is configured to run on the IKMB medCluster. More general support for other compute systems may follow later. 
 
 ## Basic example
 
 ```
-nextflow run ikmb/bacterial-annotation --assemblies '/path/to/assemblies/*.fasta' --tools prokka
+nextflow run ikmb/bacterial-annotation --assemblies '/path/to/assemblies/*.fasta' --tools prokka,dfast
 ```
 
 ## Options
@@ -26,6 +26,11 @@ Specify one or both tools - sperated by comma; results will be stored in the res
 ### `--outdir` [default = "results" ]
 
 The directory where to store the results. 
+### `--dfast_options [ default = '--minimum_length 200']
 
+Set any compatible command line options for Dfast
 
+### `--prokka_options [ default = '--compliant --centre CCGA']`
+
+Set any compatible command line options for Prokka
 

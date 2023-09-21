@@ -1,7 +1,7 @@
-include { SOFTWARE_VERSIONS } from '../modules/software_versions'
-include { MULTIQC } from './../modules/multiqc'
-include { DFAST_CORE } from './../modules/dfast/core'
-include { PROKKA } from "./../modules/prokka"
+include { CUSTOM_DUMPSOFTWAREVERSIONS }     from "./../modules/custom/dumpsoftwareversions/main"
+include { MULTIQC }                         from './../modules/multiqc'
+include { DFAST_CORE }                      from './../modules/dfast/core'
+include { PROKKA }                          from "./../modules/prokka"
 
 ch_assemblies = Channel.fromPath(params.assemblies)
 ch_qc = Channel.from([])
@@ -11,35 +11,38 @@ tools = params.tools ? params.tools.split(',').collect{it.trim().toLowerCase().r
 
 workflow BACTERIAL_ANNOTATION {
 
-	main:
+    main:
 
-	if ( 'dfast' in tools ) {
+    if ( 'dfast' in tools ) {
 
-		DFAST_CORE(
-			ch_assemblies,
-			params.db_root
-		)
-	}
-
-	if ( 'prokka' in tools ) {
-
-		PROKKA(
-			ch_assemblies
-		)
-
-	}
-
-	//ch_qc = ch_qc.mix(DFAST_CORE.out.report)
-
-	SOFTWARE_VERSIONS(
-		ch_versions.collect()
-	)		
-	
-        MULTIQC(
-           ch_qc.collect()
+        DFAST_CORE(
+            ch_assemblies,
+            params.dfast_db_root
         )
 
-	emit:
-	qc = MULTIQC.out.report
+        ch_versions = ch_versions.mix(DFAST_CORE.out.versions)
+    }
+
+    if ( 'prokka' in tools ) {
+
+        PROKKA(
+            ch_assemblies
+        )
+
+        ch_versions = ch_versions.mix(PROKKA.out.versions)
+    }
+
+    CUSTOM_DUMPSOFTWAREVERSIONS (
+        ch_versions.unique().collectFile(name: 'collated_versions.yml')
+    )		
+	
+    ch_qc = ch_qc.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml)
+
+    MULTIQC(
+        ch_qc.collect()
+    )
+
+    emit:
+    qc = MULTIQC.out.report
 	
 }
