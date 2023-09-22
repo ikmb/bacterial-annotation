@@ -4,7 +4,7 @@ process DFAST_CORE {
 
     container 'quay.io/biocontainers/dfast:1.2.18--h5b5514e_1'
 
-    publishDir "${params.outdir}/dfast", mode: 'copy'
+    publishDir "${params.outdir}/${meta.sample}/dfast", mode: 'copy'
 
     input:
     tuple val(meta),path(fasta)
@@ -13,15 +13,17 @@ process DFAST_CORE {
     output:
     path(results), emit: results
     path(report), emit: report
+    tuple val(meta),path("${results}/protein.faa"), emit: proteins
     path("versions.yml"), emit: versions
     
     script:
     base_name = meta.sample
     results = base_name + "_dfast"
     report = base_name + ".statistics.txt"
-
+    organism = meta.genus + "_" + meta.species
+    strain = meta.strain
     """
-    dfast --genome $fasta ${params.dfast_options} -o $results --cpu ${task.cpus}
+    dfast --genome $fasta ${params.dfast_options} --organism ${organism} --strain $strain -o $results --cpu ${task.cpus}
     cp "${results}/statistics.txt" $report
 
     cat <<-END_VERSIONS > versions.yml

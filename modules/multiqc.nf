@@ -8,12 +8,13 @@ process MULTIQC {
    path('*')
 
    output:
-   path('multiqc_report.html'), emit: html
+   path("${params.run_name}_multiqc_report.html"), emit: html
 
    script:
 
    """
-      multiqc . 
+      cp ${baseDir}/conf/multiqc_config.yaml .
+      multiqc -n ${params.run_name}_multiqc_report . 
    """	
 
 }

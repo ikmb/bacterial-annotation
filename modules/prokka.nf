@@ -4,7 +4,7 @@ process PROKKA {
 
     container 'quay.io/biocontainers/prokka:1.14.6--pl5321hdfd78af_4'
 
-    publishDir "${params.outdir}/prokka", mode: 'copy'
+    publishDir "${params.outdir}/${meta.sample}/prokka", mode: 'copy'
 
     input:
     tuple val(meta),path(fasta)
@@ -12,11 +12,12 @@ process PROKKA {
     output:
     path(results)
     path("versions.yml"), emit: versions
+    tuple val(meta),path("${results}/${base}.faa"), emit: proteins
     path(report), emit: report
     
     script:
     base = meta.sample
-    results = "prokka_${meta.sample}"
+    results = "${meta.sample}"
     report = "${results}/${base}.txt"
     """
     prokka --outdir $results \

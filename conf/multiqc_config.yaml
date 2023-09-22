@@ -1,0 +1,27 @@
+title: "Annotation pipeline report"
+subtitle: "Best-practice workflow for bacterial genome annotation"
+custom_logo: "ikmblogo.png"
+custom_logo_title: "Institute of Clinical Molecular Biology, Kiel"
+custom_logo_url: "http://www.ikmb.uni-kiel.de"
+
+extra_fn_clean_exts:
+    - _R1
+    - _R2
+    - -L[0-9]
+    - -dedup
+    - _duplicate_metrics.txt
+    - .pass
+
+report_comment: >
+    This report has been generated automatically by the IKMB bacterial annotation pipeline.
+    For help interpreting the outputs, please see: https://github.com/ikmb/bacterial-annotation
+
+report_header_info:
+    - Contact E-mail: "m.hoeppner@ikmb.uni-kiel.de"
+    - Application Type: "Bacterial annotation"
+
+top_modules:
+    - 'general_stats'
+    - 'prokka'
+    - 'busco'
+    - 'software_versions'
