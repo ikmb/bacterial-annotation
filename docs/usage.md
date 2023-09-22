@@ -5,7 +5,7 @@ This pipeline is configured to run on the IKMB medCluster. More general support 
 ## Basic example
 
 ```
-nextflow run ikmb/bacterial-annotation --assemblies '/path/to/assemblies/*.fasta' --tools prokka,dfast
+nextflow run ikmb/bacterial-annotation --samples samples.csv --tools 'prokka,dfast'
 ```
 
 ## Options
@@ -15,7 +15,7 @@ nextflow run ikmb/bacterial-annotation --assemblies '/path/to/assemblies/*.fasta
 A samplesheet to provide the relevant data to the pipeline. This is the preferred option, if possible. Else, see `--assemblies` below. 
 
 ```bash
-nextflow run ikmb/bacterial-annotation --samples samples.csv --email 'me@somewhere.org'
+nextflow run ikmb/bacterial-annotation --samples samples.csv --email 'me@somewhere.org' --tools prokka
 ```
 
 The samplesheet format looks as follows:
@@ -33,17 +33,17 @@ up to and including "odb10".
 A regular expression pointing to a list of bacterial assemblies in FASTA format. This option is discouraged since it cannot provide useful metadata about genus, species and so on. These fields will all be filled with the name of the assembly file. 
 
 ```bash
-nextflow run ikmb/bacterial-annotation --assemblies '/path/to/assemblies/*.fasta' --email 'me@somewhere.org'
+nextflow run ikmb/bacterial-annotation --assemblies '/path/to/assemblies/*.fasta' --email 'me@somewhere.org' --tools prokka
 ```
 
-### `--tools prokka,dfast`
+### `--tools 'prokka,dfast'`
 
 This pipeline currently supports two annotation tools:
 
 - [DFast_core](https://github.com/nigyta/dfast_core) [dfast]
 - [Prokka](https://github.com/tseemann/prokka) [prokka]
 
-Specify one or both tools - sperated by comma; results will be stored in the respective subfolder. Dfast tends to produce better results and is the recommended choice. 
+Specify one or both tools - sperated by comma and enclosed by single quotes; results will be stored in the respective subfolder. Dfast tends to produce better results and is the recommended choice. 
 
 ### `--outdir` [default = "results" ]
 
