@@ -27,13 +27,13 @@ WorkflowPipeline.initialise( params, log)
 
 include { BACTERIAL_ANNOTATION } from './workflows/bacterial_annotation' params(params)
 
-multiqc_report = Channel.from([])
+def multiqc_report = Channel.from([])
 
 workflow {
 
 	BACTERIAL_ANNOTATION()
 
-	multiqc_report = multiqc_report.mix(BACTERIAL_ANNOTATION.out.qc)
+	multiqc_report = multiqc_report.mix(BACTERIAL_ANNOTATION.out.qc).toList()
 }
 
 workflow.onComplete {
@@ -100,7 +100,7 @@ workflow.onComplete {
                 	}
         	}
     	} catch (all) {
-        	log.warn "[IKMB ExoSeq] Could not attach MultiQC report to summary email"
+        	log.warn "[IKMB Bacterial-Annotation] Could not attach MultiQC report to summary email"
   	}
 
 	def smail_fields = [ email: params.email, subject: subject, email_txt: email_txt, email_html: email_html, baseDir: "$baseDir", mqcFile: mqc_report, mqcMaxSize: params.maxMultiqcEmailFileSize.toBytes() ]

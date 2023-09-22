@@ -1,13 +1,13 @@
 process DFAST_CORE {
 
-    tag "$fasta"
+    tag "${meta.sample}"
 
     container 'quay.io/biocontainers/dfast:1.2.18--h5b5514e_1'
 
     publishDir "${params.outdir}/dfast", mode: 'copy'
 
     input:
-    path(fasta)
+    tuple val(meta),path(fasta)
     env DFAST_DB_ROOT
 
     output:
@@ -16,7 +16,7 @@ process DFAST_CORE {
     path("versions.yml"), emit: versions
     
     script:
-    base_name = fasta.getBaseName()
+    base_name = meta.sample
     results = base_name + "_dfast"
     report = base_name + ".statistics.txt"
 
